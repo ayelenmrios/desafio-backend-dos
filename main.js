@@ -1,60 +1,74 @@
 const fs = require("fs");
-const rutaSin = "./ejemplo-sin.txt";
-fs.writeFileSync(rutaSin, "Desafio 2");
-let contenido = fs.readFileSync(rutaSin, "utf-8");
 
 class ProductManager {
     static lastId = 0;
-    constructor() {
+    constructor(archivo) {
+        this.path = archivo;
         this.products = [];
-    };
+        this.getProducts();
+    }
 
-    // Método addProduct
     addProduct(title, description, price, thumbnail, code, stock) {
-        if(!title || !description || !price || !thumbnail || !code || !stock){
-            console.log("Todos los campos son obligatorios. Porfavor revise los valores.");
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            console.log("Todos los campos son obligatorios. Por favor revise los valores.");
             return;
         }
-        if(this.products.some(item => item.code === code)){
-            console.log("Se repite el codigo de los productos. Porfavor revise los valores.");
+        if (this.products.some(item => item.code === code)) {
+            console.log("Se repite el código de los productos. Por favor revise los valores.");
             return;
         }
         const newProduct = {
             id: ++ProductManager.lastId,
-            title, 
-            description, 
-            price, 
-            thumbnail, 
-            code, 
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
             stock
-        }
+        };
         this.products.push(newProduct);
-        
+        this.guardarArchivos();
+        // Cada vez que se agregue un producto al array se guarda automáticamente.
     }
 
-    // Método getProducts
-    getProducts(){
-        return this.products;
-    };
+    // Guardar archivo con productos
+    guardarArchivos = async () => {
+        await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2));
+    }
 
-    // Método getProductById:
-    getProductById(id){
+    // Leer productos
+    getProducts = async () => {
+        let respuesta = await fs.promises.readFile(this.path, "utf-8");
+        this.products = JSON.parse(respuesta);
+        console.log(this.products);
+        return this.products;
+    }
+
+    getProductById(id) {
         const product = this.products.find(item => item.id === id);
 
-        if(!product){
-            console.log("Not found");
+        if (!product) {
+            console.log("Producto no encontrado");
+            return null;
         } else {
-            console.log("Found", product);
+            console.log("Producto encontrado!");
+            return product;
         }
+    }
+    // Borrar productos
+    deleteProducts = async (id) => {
+        this.products = this.products.filter(item => item.id !== id);
+        await this.guardarArchivos();
+        console.log("Producto eliminado correctamente");
     }
 }
 
-const inventario = new ProductManager();
+const ruta = new ProductManager("./archivo-productos.json");
 
-inventario.addProduct("Campera", "Campera de invierno impermiable con capucha disponible en los colores rojo, verde y azul.", 500, "Sin imagen", "C001", 10);
-inventario.addProduct("Camisa", "Camisa a cuadros unisex disponible en los colores rojo, verde y gris.", 1500, "Sin imagen", "C002", 5);
-inventario.addProduct("Zapatillas", "Zapatillas marca Jaguar unisex hasta el tobillo desde talle 30 hasta 37, consultar previamente por colores disponibles.", 2000, "Sin imagen", "C003", 20);
+ruta.addProduct("Campera", "Campera de invierno impermiable con capucha disponible en los colores rojo, verde y azul.", 500, "Sin imagen", "C001", 10);
+ruta.addProduct("Camisa", "Camisa a cuadros unisex disponible en los colores rojo, verde y gris.", 1500, "Sin imagen", "C002", 5);
+ruta.addProduct("Zapatillas", "Zapatillas marca Jaguar unisex hasta el tobillo desde talle 30 hasta 37, consultar previamente por colores disponibles.", 2000, "Sin imagen", "C003", 20);
+ruta.addProduct("Medias", "Medias de abejita amarillas con rayas negras disponible en los talles 20 hasta 37", 500, "Sin imagen", "C004", 40);
 
-console.log(inventario.getProducts());
-
-
+ruta.deleteProducts(3);
+console.log(ruta.getProducts());
