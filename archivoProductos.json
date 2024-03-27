@@ -3,7 +3,7 @@
     "id": 1,
     "title": "Campera",
     "description": "Campera de invierno impermiable con capucha disponible en los colores rojo, verde y azul.",
-    "price": 500,
+    "price": 6,
     "thumbnail": "Sin imagen",
     "code": "C001",
     "stock": 10
@@ -12,25 +12,21 @@
     "id": 2,
     "title": "Camisa",
     "description": "Camisa a cuadros unisex disponible en los colores rojo, verde y gris.",
-    "price": 1500,
+    "price": 2,
     "thumbnail": "Sin imagen",
     "code": "C002",
     "stock": 5
   },
   {
-    "id": 4,
-    "title": "Medias",
-    "description": "Medias de abejita amarillas con rayas negras disponible en los talles 20 hasta 37",
-    "price": 500,
+    "id": 3,
+    "title": "Zapatillas",
+    "description": "Zapatillas marca Jaguar unisex hasta el tobillo desde talle 30 hasta 37, consultar previamente por colores disponibles.",
+    "price": 2000,
     "thumbnail": "Sin imagen",
-    "code": "C004",
-    "stock": 40
-  }
-],
     "code": "C003",
     "stock": 20
-  }
-]  {
+  },
+  {
     "id": 4,
     "title": "Medias",
     "description": "Medias de abejita amarillas con rayas negras disponible en los talles 20 hasta 37",
